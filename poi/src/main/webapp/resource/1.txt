@@ -1,0 +1,13 @@
+admin			测试
+yongleadmin		测试
+
+selfMachine		自助购票机
+selfPC			官网
+selfWAP			手机官网
+selfWeChat		微信
+
+
+guitai1			柜台1
+guitai2			柜台2
+guitai3			柜台3
+guitai4			柜台4
