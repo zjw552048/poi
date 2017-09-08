@@ -1,0 +1,9 @@
+# maven ignore
+target/
+
+# eclipse ignore
+.settings/
+.classpath
+
+# temp ignore
+temp/
