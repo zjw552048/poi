@@ -1,4 +1,4 @@
-package read;
+package util.readUtil;
 
 public class RzsxxxBean {
 	private String username;
