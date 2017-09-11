@@ -82,6 +82,10 @@ public class TestExportLog {
 				OrderInfo orderInfo = new OrderInfo();
 				row = sheet.getRow(currentRow++);
 				for(int j=0;i<columnTitleArray.length;j++){
+					Integer titleNum = columnTitleMap.get(columnTitleArray[i]);
+					if(titleNum == null){
+						throw new ColumnTitleNotFoundException("配置文件中,不存在列<"+columnTitleArray[i]+">");
+					}
 					setOrderInfoBeanAttribute(orderInfo, columnTitleArray[i]);
 				}
 				// 下单来源 String sourceOfOrder
