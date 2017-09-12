@@ -8,7 +8,7 @@ import java.util.Date;
  * @author Z
  *
  */
-public class OrderInfo implements Serializable{
+public class OrderInfo implements Serializable, Cloneable{
 	/**
 	 * 
 	 */
@@ -47,7 +47,7 @@ public class OrderInfo implements Serializable{
 	private String performanceId;
 	// 场次名称
 	private String nameOfPerformance;
-	// 演出馆厅
+	// 馆厅
 	private String ieldOfPerformance;
 	// 演出日期
 	private Date dateOfPerformance;
@@ -60,6 +60,13 @@ public class OrderInfo implements Serializable{
 	// 实收=应收*折扣
 	private double actualPayment;
 	
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+
 	public String getSourceOfOrder() {
 		return sourceOfOrder;
 	}

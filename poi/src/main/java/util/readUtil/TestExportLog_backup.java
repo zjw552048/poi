@@ -27,29 +27,8 @@ import util.StatusUtil;
  * @author zhangjiawei
  *
  */
-public class TestExportLog {
-	/**
-	 * 获取工作簿标题数组
-	 * @param sheet
-	 * @return
-	 */
-	private static String[] getSheetColumnTitleArray(Sheet sheet){
-		//获取标题行
-		Row titleRow = sheet.getRow(0);
-		//获取标题数目
-		int titleNum = titleRow.getLastCellNum();
-		//新建标题数目长度的数组
-		String[] columnTitleArray = new String[titleNum];
-		for(int i=0;i<titleNum;i++){
-			//将标题值,依次存入数组
-			columnTitleArray[i] = titleRow.getCell(i).getStringCellValue();
-		}
-		return columnTitleArray;
-	}
-	private static void setOrderInfoBeanAttribute(OrderInfo orderInfo, Row row, 
-												  Map<String, Integer> columnTitleMap, String columnTitle){
-		
-	}
+public class TestExportLog_backup {
+	
 	private static String getStringCellValue(Row row, Map<String, Integer> columnTitleMap, String columnTitle){
 		System.out.println(columnTitle);
 		Integer titleNum = columnTitleMap.get(columnTitle);
@@ -60,19 +39,18 @@ public class TestExportLog {
 		System.out.println(cell.getCellTypeEnum());
 		return cell.getStringCellValue();
 	}
+	
     public static void main(String[] args) {
     	String fileName = "test.xls";
     	String propName = "column.properties";
 		try (
 			//读取文件流
-			InputStream is = TestExportLog.class.getClassLoader().getResourceAsStream(fileName);
+			InputStream is = TestExportLog_backup.class.getClassLoader().getResourceAsStream(fileName);
 		    BufferedInputStream bf = new BufferedInputStream(is);){
 			Workbook wb = WorkbookFactory.create(bf);
 			Sheet sheet = wb.getSheetAt(0);
 			//获取配置文件允许的标题map
 			Map<String, Integer> columnTitleMap = PropertyUtil.getColumnPropMap(propName);
-			//获取excel标题数组
-			String[] columnTitleArray = getSheetColumnTitleArray(sheet);
 			//获取最后一行
 			int lastRow = sheet.getLastRowNum();
 			//跳过标题,从第二行开始读取数据
@@ -81,13 +59,6 @@ public class TestExportLog {
 			for(int i=0;i<lastRow;i++){
 				OrderInfo orderInfo = new OrderInfo();
 				row = sheet.getRow(currentRow++);
-				for(int j=0;i<columnTitleArray.length;j++){
-					Integer titleNum = columnTitleMap.get(columnTitleArray[i]);
-					if(titleNum == null){
-						throw new ColumnTitleNotFoundException("配置文件中,不存在列<"+columnTitleArray[i]+">");
-					}
-					setOrderInfoBeanAttribute(orderInfo, columnTitleArray[i]);
-				}
 				// 下单来源 String sourceOfOrder
 				String sourceOfOrder = getStringCellValue(row, columnTitleMap, "下单来源"); 
 				orderInfo.setSourceOfOrder(sourceOfOrder);
