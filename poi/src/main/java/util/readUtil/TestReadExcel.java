@@ -80,16 +80,22 @@ public class TestReadExcel {
 				OrderInfo orderInfo = new OrderInfo();
 				row = sheet.getRow(currentRow++);
 				for(int j=0;j<columnTitleArray.length;j++){
-					/*
-					 * 进入工具类，根据标题设置bean属性
-					 * 返回一个详细票价List，集合中每个bean代表一个票种
-					 */
-					List<DetailedPriceInfo> pricesList =  ReadCellUtil.setOrderInfoBeanAttribute(orderInfo, row, columnTitleArray[j], columnTitleMap);
+					//进入工具类，根据标题设置bean属性
+					ReadCellUtil.setOrderInfoBeanAttribute(orderInfo, row, columnTitleArray[j], columnTitleMap);
 				}
 				System.out.println(orderInfo);
 				list.add(orderInfo);
-				//当存在多种票种的情况
-				if(pricesList.)
+				//获取该条记录的票价单元格详细信息List,判断同一条数据存在多种票种的情况
+				List<DetailedPriceInfo> pricesList = null;
+				//如果存在多条记录,即复制其余属性,修改单价/张数属性
+				if(pricesList.size()>1){
+					for(int j=1;j<pricesList.size();j++){
+						OrderInfo OrderInfoSameLine = (OrderInfo) orderInfo.clone();
+						OrderInfoSameLine.setPriceOfTicket(pricesList.get(j).getPrice());
+						OrderInfoSameLine.setNumberOfTicket(pricesList.get(j).getNum());
+						list.add(OrderInfoSameLine);
+					}
+				}
 			}
 			return list;
 		} catch (Exception e) {

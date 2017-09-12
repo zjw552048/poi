@@ -2,31 +2,31 @@ package util;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
-import entity.OrderInfo;
 import entity.DetailedPriceInfo;
+import entity.OrderInfo;
 import exception.CellTypeIllegalException;
 import exception.ColumnTitleNotFoundException;
 
 public class ReadCellUtil {
 	
 	/**
-	 * 当前设定合法类型只有三种, BLANK\STRING\NUMERIC
+	 * 当前设定合法类型只有三种, BLANK\STRING
 	 * @param cell
 	 * @return
 	 */
-	public static Object getCellValue(Cell cell) {
-        Object cellValue = null;
+	public static String getCellValue(Cell cell) {
+		String cellValue = null;
         if(cell == null){
+        	System.out.println("this cell is null");
         	return null;
         }
+        System.out.println(cell.getCellTypeEnum());
         switch (cell.getCellTypeEnum()) {
         case BLANK://空单元格
         	cellValue = null;
@@ -34,23 +34,21 @@ public class ReadCellUtil {
         case STRING://字符串单元格
         	cellValue = cell.getStringCellValue();
         	break;
-        case NUMERIC://数值类型单元格，分为数值/日期
-        	if (DateUtil.isCellDateFormatted(cell)) {
-        		cellValue = cell.getDateCellValue();
-            } else {
-            	cellValue = cell.getNumericCellValue();
-            }
-        	break;
         default:
         	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"]类型非法");
+//        case NUMERIC://数值类型单元格，分为数值/日期
+//        	if (DateUtil.isCellDateFormatted(cell)) {
+//        		cellValue = cell.getDateCellValue();
+//            } else {
+//            	cellValue = cell.getNumericCellValue();
+//            }
+//        	break;
 //        case FORMULA:
 ////        	cellValue = cell.getCellFormula();
 ////        	break;
-//        	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"],cellType = FORMULA");
 //        case BOOLEAN:
 ////        	cellValue = cell.getBooleanCellValue();
 ////        	break;
-//        	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"],cellType = BOOLEAN");
 //        case _NONE:
 //        	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"],cellType = _NONE");
 //        case ERROR:
@@ -67,93 +65,76 @@ public class ReadCellUtil {
 	 * @param columnTitle
 	 * @throws ParseException
 	 */
-	public static List<DetailedPriceInfo> setOrderInfoBeanAttribute(OrderInfo orderInfo, Row row, String columnTitle,
+	public static void setOrderInfoBeanAttribute(OrderInfo orderInfo, Row row, String columnTitle,
 												  Map<String, Integer> columnTitleMap) throws ParseException{
-		//定义票价数组，当该条记录有多种票时返回,否则返回null
-		List<DetailedPriceInfo> pricesList = null; 
-		
 		Integer titleNum = columnTitleMap.get(columnTitle);
 		if(titleNum == null){
 			throw new ColumnTitleNotFoundException("配置文件中,不存在列<"+columnTitle+">");
 		}
-		System.out.println(titleNum);
-		System.out.println(row.getCell(titleNum));
-		Object cellValue = ReadCellUtil.getCellValue(row.getCell(titleNum));
+		String cellValue = ReadCellUtil.getCellValue(row.getCell(titleNum));
+		System.out.println(titleNum+" , "+row.getCell(titleNum)+" , "+cellValue);
+		System.out.println(columnTitle);
 		switch(columnTitle){
 		case "下单来源":// 下单来源 String sourceOfOrder
-			orderInfo.setSourceOfOrder((String) cellValue);
+			orderInfo.setSourceOfOrder(cellValue);
 			break;
 		case "内部订单号":// 内部订单号 String orderId
-			orderInfo.setOrderId((String) cellValue);
+			orderInfo.setOrderId(cellValue);
 			break;
 		case "用户订单号":// 用户订单号 String customOrderId
-			orderInfo.setCustomOrderId((String) cellValue);
+			orderInfo.setCustomOrderId(cellValue);
 			break;
 		case "下单日期":// 下单日期 Date dateOfOrder
-			Date dateOfOrder = null;
-			if(cellValue instanceof String){
-				dateOfOrder = DateFormatUtil.parseToDate((String) cellValue);
-			}else if(cellValue instanceof Date){
-				dateOfOrder = (Date) cellValue;
-			}
-			orderInfo.setDateOfOrder(dateOfOrder);
+			//比较特殊,下单日期可能为空
+			orderInfo.setDateOfOrder(DateFormatUtil.parseToDate(cellValue));
 			break;
 		case "发货日期":// 发货日期 Date dateOfIssuance
-			Date dateOfIssuance = null;
-			if(cellValue instanceof String){
-				dateOfIssuance = DateFormatUtil.parseToDate((String) cellValue);
-			}else if(cellValue instanceof Date){
-				dateOfIssuance = (Date) cellValue;
+			if(cellValue != null){
+				orderInfo.setDateOfIssuance(DateFormatUtil.parseToDate(cellValue));
 			}
-			orderInfo.setDateOfIssuance(dateOfIssuance);
 			break;
 		case "订单状态":// 订单状态 0=交易关闭 1=已完成 int statusOfOrder
-			orderInfo.setStatusOfOrder(StatusUtil.getStatusOfOrder((String) cellValue));
+			orderInfo.setStatusOfOrder(StatusUtil.getStatusOfOrder(cellValue));
 			break;
 		case "支付方式":// 支付方式 String methodOfPayment
-			orderInfo.setMethodOfPayment((String) cellValue);
+			orderInfo.setMethodOfPayment(cellValue);
 			break;
-		case "支付状态 ":// 支付状态 0=未支付 1=已支付 int statusOfPayment
-			orderInfo.setStatusOfPayment(StatusUtil.getStatusOfPayment((String) cellValue));
+		case "支付状态":// 支付状态 0=未支付 1=已支付 int statusOfPayment
+			orderInfo.setStatusOfPayment(StatusUtil.getStatusOfPayment(cellValue));
 			break;
 		case "配送方式":// 配送方式  String methodOfDistribution
-			orderInfo.setMethodOfDistribution((String) cellValue);
+			orderInfo.setMethodOfDistribution(cellValue);
 			break;
 		case "收货人":// 收货人 String consignee
-			orderInfo.setConsignee((String) cellValue);
+			orderInfo.setConsignee(cellValue);
 			break;
 		case "收货人手机号":// 收货人手机号 String phoneNumberOfConsignee
-			orderInfo.setPhoneNumberOfConsignee((String) cellValue);
+			orderInfo.setPhoneNumberOfConsignee(cellValue);
 			break;
 		case "下单人手机号":// 下单人手机号 String phoneNumberOfCustom
-			orderInfo.setPhoneNumberOfCustom((String) cellValue);
+			orderInfo.setPhoneNumberOfCustom(cellValue);
 			break;
 		case "下单会员等级折扣":// 下单会员等级折扣 String discountGrade
-			orderInfo.setDiscountGrade((String) cellValue);
+			orderInfo.setDiscountGrade(cellValue);
 			break;
 		case "订单会员权益":// 订单会员权益 String perksOfMembershi
-			orderInfo.setPerksOfMembershi((String) cellValue);
+			//比较特殊,可能为空
+			orderInfo.setPerksOfMembershi(cellValue);
 			break;
 		case "商品名称":// 商品名称 String nameOfCommodity
-			orderInfo.setNameOfCommodity((String) cellValue);
+			orderInfo.setNameOfCommodity(cellValue);
 			break;
 		case "场次Id":// 场次Id String performanceId
-			orderInfo.setPerformanceId((String) cellValue);
+			orderInfo.setPerformanceId(cellValue);
 			break;
 		case "场次名称":// 场次名称 String nameOfPerformance
-			orderInfo.setNameOfPerformance((String) cellValue);
+			orderInfo.setNameOfPerformance(cellValue);
 			break;
 		case "馆厅":// 馆厅 String ieldOfPerformance
-			orderInfo.setIeldOfPerformance((String) cellValue);
+			orderInfo.setIeldOfPerformance(cellValue);
 			break;
 		case "演出日期":// 演出日期 Date dateOfPerformance
-			Date dateOfPerformance = null;
-			if(cellValue instanceof String){
-				dateOfPerformance = DateFormatUtil.parseToDate((String) cellValue);
-			}else if(cellValue instanceof Date){
-				dateOfPerformance = (Date) cellValue;
-			}
-			orderInfo.setDateOfPerformance(dateOfPerformance);
+			orderInfo.setDateOfPerformance(DateFormatUtil.parseToDate(cellValue));
 			break;
 		case "票价":// 票价=单价*张数 
 			/*
@@ -162,21 +143,20 @@ public class ReadCellUtil {
 			 * 单价 double priceOfTicket 
 			 * 张数 int numberOfTicket
 			 */
-			String pricesCellValue = (String) cellValue;
-			//返回详细票价信息list
-			pricesList = getDetailedPriceList(pricesCellValue);
+			String pricesCellValue = cellValue;
+			//当该条记录有多种票时返回详细票价信息list
+			List<DetailedPriceInfo> pricesList = getDetailedPriceList(pricesCellValue);
 			//将第一种票价信息赋值
 			orderInfo.setPriceOfTicket(pricesList.get(0).getPrice());
 			orderInfo.setNumberOfTicket(pricesList.get(0).getNum());
 			break;
 		case "应收":// 应收 double shouldPayment
-			orderInfo.setShouldPayment((Double) cellValue);
+			orderInfo.setShouldPayment(Double.parseDouble(cellValue));
 			break;
 		case "实收":// 实收=应收*折扣 double actualPayment
-			orderInfo.setActualPayment((Double) cellValue);
+			orderInfo.setActualPayment(Double.parseDouble(cellValue));
 			break;
 		}
-		return pricesList;
 	}
 	/**
 	 * 处理票价，返回 单价*张数 的List
