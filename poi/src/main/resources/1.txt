@@ -11,3 +11,28 @@ guitai1			柜台1
 guitai2			柜台2
 guitai3			柜台3
 guitai4			柜台4
+
+
+ALTER TABLE POI.order_info ADD orderid varchar(100) NOT NULL COMMENT '内部订单号' ;
+ALTER TABLE POI.order_info ADD customorderid varchar(100) NOT NULL COMMENT '用户订单号' ;
+ALTER TABLE POI.order_info ADD dateoforder DATETIME NOT NULL COMMENT '下单日期' ;
+ALTER TABLE POI.order_info ADD dateofissuance DATETIME NULL COMMENT '发货日期,可为空' ;
+ALTER TABLE POI.order_info ADD statusoforder INT NOT NULL COMMENT '订单状态 0=交易关闭 1=已完成' ;
+ALTER TABLE POI.order_info ADD methodofpayment varchar(100) NOT NULL COMMENT '支付方式' ;
+ALTER TABLE POI.order_info ADD statusofpayment INT NOT NULL COMMENT '支付状态 0=未支付 1=已支付' ;
+ALTER TABLE POI.order_info ADD methodOfDistribution varchar(100) NOT NULL COMMENT '配送方式' ;
+ALTER TABLE POI.order_info ADD consignee varchar(100) NOT NULL COMMENT '收货人' ;
+ALTER TABLE POI.order_info ADD phoneNumberOfConsignee varchar(100) NOT NULL COMMENT '收货人手机号' ;
+ALTER TABLE POI.order_info ADD phoneNumberOfCustom varchar(100) NOT NULL COMMENT '下单人手机号' ;
+ALTER TABLE POI.order_info ADD discountGrade varchar(100) NOT NULL COMMENT '下单会员等级折扣' ;
+ALTER TABLE POI.order_info ADD perksOfMembershi varchar(100) NULL COMMENT '订单会员权益' ;
+ALTER TABLE POI.order_info ADD nameOfCommodity varchar(100) NOT NULL COMMENT '商品名称' ;
+ALTER TABLE POI.order_info ADD performanceId varchar(100) NOT NULL COMMENT '场次Id' ;
+ALTER TABLE POI.order_info ADD nameOfPerformance varchar(100) NOT NULL COMMENT '场次名称' ;
+ALTER TABLE POI.order_info ADD ieldOfPerformance varchar(100) NOT NULL COMMENT '馆厅' ;
+ALTER TABLE POI.order_info ADD dateOfPerformance DATETIME NOT NULL COMMENT '演出日期' ;
+ALTER TABLE POI.order_info ADD priceAndNumber varchar(100) NOT NULL COMMENT '票价' ;
+ALTER TABLE POI.order_info ADD priceOfTicket DOUBLE NOT NULL COMMENT '单价' ;
+ALTER TABLE POI.order_info ADD numberOfTicket INT NOT NULL COMMENT '张数' ;
+ALTER TABLE POI.order_info ADD shouldPayment DOUBLE NOT NULL COMMENT '应收' ;
+ALTER TABLE POI.order_info ADD actualPayment DOUBLE NOT NULL COMMENT '实收=应收*折扣' ;
