@@ -17,7 +17,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import entity.DetailedPriceInfo;
 import entity.OrderInfo;
 import util.PropertyUtil;
 import util.ReadCellUtil;
@@ -30,10 +29,10 @@ import util.ReadCellUtil;
 public class TestReadExcel {
 	public static void main(String[] args) {
     	String propName = "column.properties";
-    	String fileName = "test.xls";
+    	String fileName = "订单查询20170908 14%3A28.xls";
     	
     	TestReadExcel t = new TestReadExcel();
-    	t.readSheet(propName, fileName);
+    	System.out.println(t.readSheet(propName, fileName).size());
     }
 	
 	/**
@@ -83,19 +82,8 @@ public class TestReadExcel {
 					//进入工具类，根据标题设置bean属性
 					ReadCellUtil.setOrderInfoBeanAttribute(orderInfo, row, columnTitleArray[j], columnTitleMap);
 				}
-				System.out.println(orderInfo);
-				list.add(orderInfo);
-				//获取该条记录的票价单元格详细信息List,判断同一条数据存在多种票种的情况
-				List<DetailedPriceInfo> pricesList = null;
-				//如果存在多条记录,即复制其余属性,修改单价/张数属性
-				if(pricesList.size()>1){
-					for(int j=1;j<pricesList.size();j++){
-						OrderInfo OrderInfoSameLine = (OrderInfo) orderInfo.clone();
-						OrderInfoSameLine.setPriceOfTicket(pricesList.get(j).getPrice());
-						OrderInfoSameLine.setNumberOfTicket(pricesList.get(j).getNum());
-						list.add(OrderInfoSameLine);
-					}
-				}
+				//拆分并返回拆分后的list，添加到结果集合里
+				list.addAll(ReadCellUtil.getMultiplePriceOrderInfo(orderInfo));
 			}
 			return list;
 		} catch (Exception e) {

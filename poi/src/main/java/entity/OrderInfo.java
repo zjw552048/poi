@@ -52,6 +52,8 @@ public class OrderInfo implements Serializable, Cloneable{
 	// 演出日期
 	private Date dateOfPerformance;
 	// 票价
+	private String priceAndNumber;
+	// 单价
 	private double priceOfTicket;
 	// 张数
 	private int numberOfTicket;
@@ -64,6 +66,16 @@ public class OrderInfo implements Serializable, Cloneable{
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+
+	public String getPriceAndNumber() {
+		return priceAndNumber;
+	}
+
+
+	public void setPriceAndNumber(String priceAndNumber) {
+		this.priceAndNumber = priceAndNumber;
 	}
 
 
@@ -299,7 +311,7 @@ public class OrderInfo implements Serializable, Cloneable{
 
 	@Override
 	public String toString() {
-		return "Order [sourceOfOrder=" + sourceOfOrder + ", orderId=" + orderId + ", customOrderId=" + customOrderId
+		return "OrderInfo [sourceOfOrder=" + sourceOfOrder + ", orderId=" + orderId + ", customOrderId=" + customOrderId
 				+ ", dateOfOrder=" + dateOfOrder + ", dateOfIssuance=" + dateOfIssuance + ", statusOfOrder="
 				+ statusOfOrder + ", methodOfPayment=" + methodOfPayment + ", statusOfPayment=" + statusOfPayment
 				+ ", methodOfDistribution=" + methodOfDistribution + ", consignee=" + consignee
@@ -307,8 +319,8 @@ public class OrderInfo implements Serializable, Cloneable{
 				+ ", discountGrade=" + discountGrade + ", perksOfMembershi=" + perksOfMembershi + ", nameOfCommodity="
 				+ nameOfCommodity + ", performanceId=" + performanceId + ", nameOfPerformance=" + nameOfPerformance
 				+ ", ieldOfPerformance=" + ieldOfPerformance + ", dateOfPerformance=" + dateOfPerformance
-				+ ", priceOfTicket=" + priceOfTicket + ", numberOfTicket=" + numberOfTicket + ", shouldPayment="
-				+ shouldPayment + ", actualPayment=" + actualPayment + "]";
+				+ ", priceAndNumber=" + priceAndNumber + ", priceOfTicket=" + priceOfTicket + ", numberOfTicket="
+				+ numberOfTicket + ", shouldPayment=" + shouldPayment + ", actualPayment=" + actualPayment + "]";
 	}
 
 }

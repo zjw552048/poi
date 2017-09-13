@@ -23,10 +23,10 @@ public class ReadCellUtil {
 	public static String getCellValue(Cell cell) {
 		String cellValue = null;
         if(cell == null){
-        	System.out.println("this cell is null");
+//        	System.out.println("this cell is null");
         	return null;
         }
-        System.out.println(cell.getCellTypeEnum());
+//        System.out.println(cell.getCellTypeEnum());
         switch (cell.getCellTypeEnum()) {
         case BLANK://空单元格
         	cellValue = null;
@@ -72,8 +72,6 @@ public class ReadCellUtil {
 			throw new ColumnTitleNotFoundException("配置文件中,不存在列<"+columnTitle+">");
 		}
 		String cellValue = ReadCellUtil.getCellValue(row.getCell(titleNum));
-		System.out.println(titleNum+" , "+row.getCell(titleNum)+" , "+cellValue);
-		System.out.println(columnTitle);
 		switch(columnTitle){
 		case "下单来源":// 下单来源 String sourceOfOrder
 			orderInfo.setSourceOfOrder(cellValue);
@@ -136,19 +134,8 @@ public class ReadCellUtil {
 		case "演出日期":// 演出日期 Date dateOfPerformance
 			orderInfo.setDateOfPerformance(DateFormatUtil.parseToDate(cellValue));
 			break;
-		case "票价":// 票价=单价*张数 
-			/*
-			 * 此处做特殊处理
-			 * 票价实际为两部分, 票价=单价*张数 
-			 * 单价 double priceOfTicket 
-			 * 张数 int numberOfTicket
-			 */
-			String pricesCellValue = cellValue;
-			//当该条记录有多种票时返回详细票价信息list
-			List<DetailedPriceInfo> pricesList = getDetailedPriceList(pricesCellValue);
-			//将第一种票价信息赋值
-			orderInfo.setPriceOfTicket(pricesList.get(0).getPrice());
-			orderInfo.setNumberOfTicket(pricesList.get(0).getNum());
+		case "票价":// 票价=单价*张数 String priceAndNumber
+			orderInfo.setPriceAndNumber(cellValue);
 			break;
 		case "应收":// 应收 double shouldPayment
 			orderInfo.setShouldPayment(Double.parseDouble(cellValue));
@@ -164,7 +151,7 @@ public class ReadCellUtil {
 	 * @param pricesCellValue
 	 * @return
 	 */
-	public static List<DetailedPriceInfo> getDetailedPriceList(String pricesCellValue){
+	private static List<DetailedPriceInfo> getDetailedPriceList(String pricesCellValue){
 		List<DetailedPriceInfo> list = new ArrayList<DetailedPriceInfo>();
 		String[] pricesArray = pricesCellValue.split(" ");
 		for(int i=0;i<pricesArray.length;i++){
@@ -173,6 +160,31 @@ public class ReadCellUtil {
 			dpi.setPrice(Double.parseDouble(detailedPriceArray[0]));
 			dpi.setNum(Integer.parseInt(detailedPriceArray[1]));
 			list.add(dpi);
+		}
+		return list;
+	}
+	/**
+	 * 当有多种票价组合在一个单元格时，此处做拆分行处理
+	 * 票价实际为两部分, 票价=单价*张数
+	 * 单价 double priceOfTicket 
+	 * 张数 int numberOfTicket
+	 * @param orderInfo
+	 * @return
+	 * @throws CloneNotSupportedException 
+	 */
+	public static List<OrderInfo> getMultiplePriceOrderInfo(OrderInfo orderInfo) throws CloneNotSupportedException{
+		List<OrderInfo> list = new ArrayList<OrderInfo>();
+		String priceAndNumber = orderInfo.getPriceAndNumber();
+		//获取该条记录的票价单元格详细信息List,判断同一条数据存在多种票种的情况
+		//当该条记录有多种票时返回详细票价信息list
+		List<DetailedPriceInfo> pricesList = getDetailedPriceList(priceAndNumber);
+		
+		//如果存在多条记录,即复制其余属性,修改单价/张数属性
+		for(int i=0;i<pricesList.size();i++){
+			OrderInfo OrderInfoSameLine = (OrderInfo) orderInfo.clone();
+			OrderInfoSameLine.setPriceOfTicket(pricesList.get(i).getPrice());
+			OrderInfoSameLine.setNumberOfTicket(pricesList.get(i).getNum());
+			list.add(OrderInfoSameLine);
 		}
 		return list;
 	}
