@@ -17,7 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import entity.OrderInfo;
+import core.entity.OrderInfo;
 import util.PropertyUtil;
 import util.ReadCellUtil;
 
@@ -28,7 +28,7 @@ import util.ReadCellUtil;
  */
 public class TestReadExcel {
 	public static void main(String[] args) {
-    	String propName = "column.properties";
+    	String propName = "properties/column.properties";
     	String fileName = "订单查询20170908 14%3A28.xls";
     	
     	TestReadExcel t = new TestReadExcel();

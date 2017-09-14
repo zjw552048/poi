@@ -16,7 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import entity.OrderInfo;
+import core.entity.OrderInfo;
 import exception.ColumnTitleNotFoundException;
 import util.DateFormatUtil;
 import util.PropertyUtil;

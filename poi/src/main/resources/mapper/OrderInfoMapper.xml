@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="entity.OrderInfo" >
+	<insert id="addOrderInfo" parameterType="entity.OrderInfo">
+		INSERT INTO `poi`.`order_info`
+		(`orderid`,
+		`customorderid`,
+		`dateoforder`,
+		`dateofissuance`,
+		`statusoforder`,
+		`methodofpayment`,
+		`statusofpayment`,
+		`methodOfDistribution`,
+		`consignee`,
+		`phoneNumberOfConsignee`,
+		`phoneNumberOfCustom`,
+		`discountGrade`,
+		`perksOfMembershi`,
+		`nameOfCommodity`,
+		`performanceId`,
+		`nameOfPerformance`,
+		`ieldOfPerformance`,
+		`dateOfPerformance`,
+		`priceAndNumber`,
+		`priceOfTicket`,
+		`numberOfTicket`,
+		`shouldPayment`,
+		`actualPayment`)
+		VALUES
+		(#{orderId}
+		#{customOrderId}
+		#{dateOfOrder}
+		#{dateOfIssuance}
+		#{statusOfOrder}
+		#{methodOfPayment}
+		#{statusOfPayment}
+		#{methodOfDistribution}
+		#{consignee}
+		#{phoneNumberOfConsignee}
+		#{phoneNumberOfCustom}
+		#{discountGrade}
+		#{perksOfMembershi}
+		#{nameOfCommodity}
+		#{performanceId}
+		#{nameOfPerformance}
+		#{ieldOfPerformance}
+		#{dateOfPerformance}
+		#{priceAndNumber}
+		#{priceOfTicket}
+		#{numberOfTicket}
+		#{shouldPayment}
+		#{actualPayment})
+	</insert>
+</mapper>

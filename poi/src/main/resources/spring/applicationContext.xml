@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"  
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+		
+	<!-- 纳入mysql-datasource.properties -->
+	<util:properties id="mysql" location="classpath:mysql-jdbc.properties"/>		 
+	<!-- 注册数据库 -->
+	<bean id="datasource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="#{mysql.driverClass}"></property>
+		<property name="url" value="#{mysql.url}"></property>
+		<property name="username" value="#{mysql.username}"></property>
+		<property name="password" value="#{mysql.password}"></property>
+		<property name="maxActive" value="#{mysql.maxActive}"></property>
+		<property name="initialSize" value="#{mysql.initSize}"></property>
+	</bean>
+	<!-- 配置SqlSessionFactoryBean -->
+	<bean id="ssf" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="datasource"></property>
+		<property name="mapperLocations">
+			<array>
+				<value>classpath:mapper/*.xml</value>
+				<value>classpath:mapper/mymapper/*.xml</value>
+			</array>
+		</property>
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+	</bean>
+	<!-- 配置MapperScannerConfigurer -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.z.dao"></property>
+		<property name="sqlSessionFactory" ref="ssf"></property>
+		<!-- <property name="annotationClass" value="com.z.annotation.MyBatisDAO"></property> -->
+	</bean>
+	
+	<!-- spring配置 扫描除Controller标签外的所有spring注解
+	 	  扫描配置的base-package包下的所有使用了@Component注解的类，
+	 	  并且将它们自动注册到容器中，
+		  同时也扫描@Controller，@Service，@Respository这三个注解，
+		  因为他们是继承自@Component。 -->
+	<context:component-scan base-package="com.z">
+		<context:exclude-filter type="annotation" 
+			expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!-- 在context:component-scan中use-default-filters=“true”或缺省时，
+		  默认声明了@Required、@Autowired、 @PostConstruct、
+		 @PersistenceContext、@Resource、@PreDestroy等注解。 -->
+	<!-- <context:component-config/> -->
+	
+	
+	<!-- kaptcha 验证码生成器 -->
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
+        <property name="config">  
+            <bean class="com.google.code.kaptcha.util.Config">  
+                <constructor-arg>  
+                    <props>  
+                        <prop key="kaptcha.border">yes</prop>  
+                        <prop key="kaptcha.border.color">247,103,40</prop>  
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>  
+                        <prop key="kaptcha.image.width">125</prop>  
+                        <prop key="kaptcha.image.height">35</prop>  
+                        <prop key="kaptcha.textproducer.font.size">30</prop>  
+                        <prop key="kaptcha.session.key">code</prop>  
+                        <prop key="kaptcha.textproducer.char.length">4</prop>  
+                        <prop key="kaptcha.textproducer.font.names">微软雅黑,宋体,楷体</prop>
+                        <prop key="kaptcha.obscurificator.impl">com.z.plugin.kaptcha.MyRipple</prop>  
+                    </props>  
+                </constructor-arg>  
+            </bean>  
+        </property>  
+    </bean>
+</beans>
