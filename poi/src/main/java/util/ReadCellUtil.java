@@ -66,12 +66,12 @@ public class ReadCellUtil {
 	 * @throws ParseException
 	 */
 	public static void setOrderInfoBeanAttribute(OrderInfo orderInfo, Row row, String columnTitle,
-												  Map<String, Integer> columnTitleMap) throws ParseException{
-		Integer titleNum = columnTitleMap.get(columnTitle);
+												  Map<String, String> columnTitleMap) throws ParseException{
+		String titleNum = columnTitleMap.get(columnTitle);
 		if(titleNum == null){
 			throw new ColumnTitleNotFoundException("配置文件中,不存在列<"+columnTitle+">");
 		}
-		String cellValue = ReadCellUtil.getCellValue(row.getCell(titleNum));
+		String cellValue = ReadCellUtil.getCellValue(row.getCell(Integer.parseInt(titleNum)));
 		switch(columnTitle){
 		case "下单来源":// 下单来源 String sourceOfOrder
 			orderInfo.setSourceOfOrder(cellValue);

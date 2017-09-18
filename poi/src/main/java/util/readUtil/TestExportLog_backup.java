@@ -29,13 +29,13 @@ import util.StatusUtil;
  */
 public class TestExportLog_backup {
 	
-	private static String getStringCellValue(Row row, Map<String, Integer> columnTitleMap, String columnTitle){
+	private static String getStringCellValue(Row row, Map<String, String> columnTitleMap, String columnTitle){
 		System.out.println(columnTitle);
-		Integer titleNum = columnTitleMap.get(columnTitle);
+		String titleNum = columnTitleMap.get(columnTitle);
 		if(titleNum == null){
 			throw new ColumnTitleNotFoundException("配置文件中,不存在列<"+columnTitle+">");
 		}
-		Cell cell = row.getCell(titleNum);
+		Cell cell = row.getCell(Integer.parseInt(titleNum));
 		System.out.println(cell.getCellTypeEnum());
 		return cell.getStringCellValue();
 	}
@@ -50,7 +50,7 @@ public class TestExportLog_backup {
 			Workbook wb = WorkbookFactory.create(bf);
 			Sheet sheet = wb.getSheetAt(0);
 			//获取配置文件允许的标题map
-			Map<String, Integer> columnTitleMap = PropertyUtil.getColumnPropMap(propName);
+			Map<String, String> columnTitleMap = PropertyUtil.getPropMap(propName);
 			//获取最后一行
 			int lastRow = sheet.getLastRowNum();
 			//跳过标题,从第二行开始读取数据

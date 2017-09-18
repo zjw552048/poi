@@ -69,7 +69,7 @@ public class TestReadExcel {
 			//获取excel标题数组
 			String[] columnTitleArray = getSheetColumnTitleArray(sheet);
 			//获取配置文件允许的标题map
-			Map<String, Integer> columnTitleMap = PropertyUtil.getColumnPropMap(propName);
+			Map<String, String> columnTitleMap = PropertyUtil.getPropMap(propName);
 			//获取最后一行
 			int lastRow = sheet.getLastRowNum();
 			//跳过标题,从第二行开始读取数据

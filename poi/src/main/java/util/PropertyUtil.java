@@ -10,11 +10,11 @@ import java.util.Properties;
 import java.util.Set;
 
 public class PropertyUtil {
-	public static Map<String, Integer> getColumnPropMap(String propName) throws IOException{
+	public static Map<String, String> getPropMap(String propName) throws IOException{
 		if (propName == null || "".equals(propName.trim())) {  
             throw new IllegalArgumentException("The property name is null,return");  
         }  
-		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, String> map = new HashMap<String, String>();
 		//读取配置文件
 		InputStream is = PropertyUtil.class.getClassLoader().getResourceAsStream(propName);
 		InputStreamReader isr = new InputStreamReader(is,"utf-8");
@@ -23,17 +23,17 @@ public class PropertyUtil {
 		
 		Set<Entry<Object, Object>> entrySet = prop.entrySet();
 		String key;
-		Integer value;
+		String value;
 		for(Entry<Object, Object> entry :entrySet){
 			key = (String) entry.getKey();
-			value = Integer.parseInt((String) entry.getValue());
+			value = (String) entry.getValue();
 			map.put(key, value);
 		}
 		return map;
 	}
 	public static void main(String[] args) {
 		try {
-			System.out.println(getColumnPropMap("column.properties"));;
+			System.out.println(getPropMap("column.properties"));;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
