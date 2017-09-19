@@ -13,6 +13,35 @@ guitai3			柜台3
 guitai4			柜台4
 
 
+DROP TABLE IF EXISTS `order_info`;
+CREATE TABLE `order_info` (
+  `sourceoforder` varchar(100) NOT NULL,
+  `orderid` varchar(100) NOT NULL,
+  `customorderid` varchar(100) NOT NULL,
+  `dateoforder` datetime NOT NULL,
+  `dateofissuance` datetime DEFAULT NULL,
+  `statusoforder` int(11) NOT NULL,
+  `methodofpayment` varchar(100) DEFAULT NULL,
+  `statusofpayment` int(11) NOT NULL,
+  `methodOfDistribution` varchar(100) NOT NULL,
+  `consignee` varchar(100) DEFAULT NULL,
+  `phoneNumberOfConsignee` varchar(100) DEFAULT NULL,
+  `phoneNumberOfCustom` varchar(100) DEFAULT NULL,
+  `discountGrade` varchar(100) NOT NULL,
+  `perksOfMembershi` varchar(100) DEFAULT NULL,
+  `nameOfCommodity` varchar(100) NOT NULL,
+  `performanceId` varchar(100) NOT NULL,
+  `nameOfPerformance` varchar(100) NOT NULL,
+  `ieldOfPerformance` varchar(100) NOT NULL,
+  `dateOfPerformance` datetime NOT NULL,
+  `priceAndNumber` varchar(100) NOT NULL,
+  `priceOfTicket` double NOT NULL,
+  `numberOfTicket` int(11) NOT NULL,
+  `shouldPayment` double NOT NULL,
+  `actualPayment` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 ALTER TABLE POI.order_info ADD orderid varchar(100) NOT NULL COMMENT '内部订单号' ;
 ALTER TABLE POI.order_info ADD customorderid varchar(100) NOT NULL COMMENT '用户订单号' ;
 ALTER TABLE POI.order_info ADD dateoforder DATETIME NOT NULL COMMENT '下单日期' ;

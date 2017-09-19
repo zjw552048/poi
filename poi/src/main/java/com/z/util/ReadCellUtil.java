@@ -35,6 +35,8 @@ public class ReadCellUtil {
         	cellValue = cell.getStringCellValue();
         	break;
         default:
+        	System.out.println(cell.getCellTypeEnum());
+        	System.out.println(cell.getNumericCellValue());
         	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"]类型非法");
 //        case NUMERIC://数值类型单元格，分为数值/日期
 //        	if (DateUtil.isCellDateFormatted(cell)) {

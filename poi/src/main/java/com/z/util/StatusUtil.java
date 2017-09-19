@@ -9,9 +9,12 @@ public class StatusUtil {
 	 * @return
 	 */
 	public static int getStatusOfOrder(String statusOfOrderString){
-		int statusOfOrder = -1;
+		int statusOfOrder = -999;
 		switch (statusOfOrderString) {
 		case "系统关闭":
+			statusOfOrder = -1;
+			break;
+		case "用户取消":
 			statusOfOrder = 0;
 			break;
 		case "已完成":
@@ -31,7 +34,7 @@ public class StatusUtil {
 	 * @return
 	 */
 	public static int getStatusOfPayment(String statusOfPaymentString){
-		int statusOfPayment = -1;
+		int statusOfPayment = -999;
 		switch (statusOfPaymentString) {
 		case "未支付":
 			statusOfPayment = 0;

@@ -10,6 +10,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,26 +34,45 @@ import com.z.util.ReadCellUtil;
  *
  */
 public class TestReadExcel {
+	public static SqlSession getMapper() throws IOException{
+		InputStream inputStream = Resources.getResourceAsStream("mybatis/mybatis-config.xml");
+    	SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
+    	SqlSession sqlSession = factory.openSession();
+    	return sqlSession;
+	}
 	public static void main(String[] args) throws IOException {
-    	String propName = "properties/column.properties";
-    	String fileName = "test.xls";
+		insertData();
+		countData();
+    }
+	public static void insertData() throws IOException{
+		String propName = "properties/column.properties";
+    	String fileName = "订单查询20170919 22%3A52.xls";
     	
     	TestReadExcel t = new TestReadExcel();
     	List<OrderInfo> list = t.readSheet(propName, fileName);
     	System.out.println(list.size());
     	
-    	InputStream inputStream = Resources.getResourceAsStream("mybatis/mybatis-config.xml");
-    	SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
-    	SqlSession sqlSession = factory.openSession();
+    	SqlSession sqlSession = getMapper();
     	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
     	for(OrderInfo bean : list){
-    		System.out.println(bean);
+//    		System.out.println(bean);
     		mapper.addOrderInfo(bean);
-    		System.out.println("success");
+//    		System.out.println("success");
     	}
     	sqlSession.commit();
-    }
+	}
 	
+	public static void countData() throws IOException{
+		SqlSession sqlSession = getMapper();
+    	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
+		List<String> getNameOfCommodityList = mapper.getNameOfCommodityList();
+    	Map<String, Integer> map = new HashMap<String, Integer>();
+    	for(String nameOfCommodity : getNameOfCommodityList){
+    		int num = mapper.getNumberOfTicketsSold(nameOfCommodity);
+    		map.put(nameOfCommodity, num);
+    	}
+    	System.out.println(map);
+	}
 	/**
 	 * 获取工作簿标题数组
 	 * @param sheet

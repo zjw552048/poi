@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.z.core.dao.OrderInfoMapper" >
+	<select id="getNameOfCommodityList" resultType="String">
+		select distinct nameOfCommodity from poi.order_info
+	</select>
+	
+	<select id="getNumberOfTicketsSold" resultType="int">
+		select sum(numberOfTicket) from poi.order_info
+		where nameOfCommodity = #{nameOfCommodity}
+		and statusoforder = 1;
+	</select>
+	
 	<insert id="addOrderInfo" parameterType="OrderInfo">
 		INSERT INTO poi.order_info
-			(orderid,
+			(
+			sourceOfOrder,
+			orderid,
 			customorderid,
 			dateoforder,
 			dateofissuance,
@@ -27,7 +39,8 @@
 			shouldPayment,
 			actualPayment)
 		VALUES
-			(#{orderId},
+			(#{sourceOfOrder},
+			#{orderId},
 			#{customOrderId},
 			#{dateOfOrder},
 			#{dateOfIssuance},
@@ -51,4 +64,8 @@
 			#{shouldPayment},
 			#{actualPayment})
 	</insert>
+	
+	<delete id="clearOrderInfo">
+		delete * from poi.order_info
+	</delete>
 </mapper>
