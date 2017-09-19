@@ -4,7 +4,7 @@
  * description:  <description>
  * create time:  2017年9月4日
  */
-package util.readUtil;
+package com.z.util.readUtil;
 
 import java.io.BufferedInputStream;
 import java.io.File;

@@ -4,22 +4,28 @@
  * description:  <description>
  * create time:  2017年9月4日
  */
-package util.readUtil;
+package com.z.util.readUtil;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import core.entity.OrderInfo;
-import util.PropertyUtil;
-import util.ReadCellUtil;
+import com.z.core.dao.OrderInfoMapper;
+import com.z.core.entity.OrderInfo;
+import com.z.util.PropertyUtil;
+import com.z.util.ReadCellUtil;
 
 
 /**
@@ -27,12 +33,24 @@ import util.ReadCellUtil;
  *
  */
 public class TestReadExcel {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
     	String propName = "properties/column.properties";
-    	String fileName = "订单查询20170908 14%3A28.xls";
+    	String fileName = "test.xls";
     	
     	TestReadExcel t = new TestReadExcel();
-    	System.out.println(t.readSheet(propName, fileName).size());
+    	List<OrderInfo> list = t.readSheet(propName, fileName);
+    	System.out.println(list.size());
+    	
+    	InputStream inputStream = Resources.getResourceAsStream("mybatis/mybatis-config.xml");
+    	SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
+    	SqlSession sqlSession = factory.openSession();
+    	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
+    	for(OrderInfo bean : list){
+    		System.out.println(bean);
+    		mapper.addOrderInfo(bean);
+    		System.out.println("success");
+    	}
+    	sqlSession.commit();
     }
 	
 	/**

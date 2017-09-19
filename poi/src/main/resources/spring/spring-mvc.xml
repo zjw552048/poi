@@ -67,14 +67,14 @@
 	<mvc:resources location="/static/" mapping="/static/**"/>
 	
 	<!-- 配置WebSocket处理器 -->
-	<websocket:handlers>
+	<!-- <websocket:handlers>
         <websocket:mapping path="/myWebSocketHandler" handler="myWebSocketHandler"/>
         <websocket:handshake-interceptors>
             <bean class="com.z.plugin.webSocket.MyHandshakeInterceptor"/>
         </websocket:handshake-interceptors>
-    </websocket:handlers>
+    </websocket:handlers> -->
 	<!-- 注册WebSocket处理器 -->
-    <bean id="myWebSocketHandler" class="com.z.plugin.webSocket.MyWebSocketHandler"/>
+    <!-- <bean id="myWebSocketHandler" class="com.z.plugin.webSocket.MyWebSocketHandler"/> -->
 		
 	<!-- 配置拦截器，因为统一在shiro中做了处理，以下注释 -->
 	<!-- <mvc:interceptors>

@@ -1,4 +1,4 @@
-package exception;
+package com.z.exception;
 
 public class CellTypeIllegalException extends RuntimeException {
 

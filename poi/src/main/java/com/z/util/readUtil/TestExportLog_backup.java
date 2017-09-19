@@ -4,7 +4,7 @@
  * description:  <description>
  * create time:  2017年9月4日
  */
-package util.readUtil;
+package com.z.util.readUtil;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -16,11 +16,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import core.entity.OrderInfo;
-import exception.ColumnTitleNotFoundException;
-import util.DateFormatUtil;
-import util.PropertyUtil;
-import util.StatusUtil;
+import com.z.core.entity.OrderInfo;
+import com.z.exception.ColumnTitleNotFoundException;
+import com.z.util.DateFormatUtil;
+import com.z.util.PropertyUtil;
+import com.z.util.StatusUtil;
 
 
 /**

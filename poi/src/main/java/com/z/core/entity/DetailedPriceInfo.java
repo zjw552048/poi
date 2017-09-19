@@ -1,4 +1,4 @@
-package core.entity;
+package com.z.core.entity;
 
 public class DetailedPriceInfo {
 	//单价

@@ -1,4 +1,4 @@
-package exception;
+package com.z.exception;
 
 public class ColumnTitleNotFoundException extends RuntimeException {
 

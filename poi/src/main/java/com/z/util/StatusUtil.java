@@ -1,4 +1,4 @@
-package util;
+package com.z.util;
 
 public class StatusUtil {
 	/**
@@ -11,7 +11,7 @@ public class StatusUtil {
 	public static int getStatusOfOrder(String statusOfOrderString){
 		int statusOfOrder = -1;
 		switch (statusOfOrderString) {
-		case "交易关闭":
+		case "系统关闭":
 			statusOfOrder = 0;
 			break;
 		case "已完成":
