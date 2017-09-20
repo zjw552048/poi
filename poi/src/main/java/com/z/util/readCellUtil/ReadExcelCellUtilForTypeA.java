@@ -1,63 +1,20 @@
-package com.z.util;
+package com.z.util.readCellUtil;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import com.z.core.entity.DetailedPriceInfo;
 import com.z.core.entity.OrderInfo;
-import com.z.exception.CellTypeIllegalException;
 import com.z.exception.ColumnTitleNotFoundException;
+import com.z.util.ArithUtil;
+import com.z.util.DateFormatUtil;
+import com.z.util.StatusUtil;
 
-public class ReadCellUtil {
-	
-	/**
-	 * 当前设定合法类型只有三种, BLANK\STRING
-	 * @param cell
-	 * @return
-	 */
-	public static String getCellValue(Cell cell) {
-		String cellValue = null;
-        if(cell == null){
-//        	System.out.println("this cell is null");
-        	return null;
-        }
-//        System.out.println(cell.getCellTypeEnum());
-        switch (cell.getCellTypeEnum()) {
-        case BLANK://空单元格
-        	cellValue = null;
-        	break;
-        case STRING://字符串单元格
-        	cellValue = cell.getStringCellValue();
-        	break;
-        default:
-        	System.out.println(cell.getCellTypeEnum());
-        	System.out.println(cell.getNumericCellValue());
-        	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"]类型非法");
-//        case NUMERIC://数值类型单元格，分为数值/日期
-//        	if (DateUtil.isCellDateFormatted(cell)) {
-//        		cellValue = cell.getDateCellValue();
-//            } else {
-//            	cellValue = cell.getNumericCellValue();
-//            }
-//        	break;
-//        case FORMULA:
-////        	cellValue = cell.getCellFormula();
-////        	break;
-//        case BOOLEAN:
-////        	cellValue = cell.getBooleanCellValue();
-////        	break;
-//        case _NONE:
-//        	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"],cellType = _NONE");
-//        case ERROR:
-//        	throw new CellTypeIllegalException("单元格["+cell.getRowIndex()+","+cell.getColumnIndex()+"],cellType = ERROR");
-        }
-        return cellValue;  
-	}
+public class ReadExcelCellUtilForTypeA extends BaseReadCellUtil{
 	
 	/**
 	 * 根据列明分别设置orderInfoBean属性
@@ -73,7 +30,7 @@ public class ReadCellUtil {
 		if(titleNum == null){
 			throw new ColumnTitleNotFoundException("配置文件中,不存在列<"+columnTitle+">");
 		}
-		String cellValue = ReadCellUtil.getCellValue(row.getCell(Integer.parseInt(titleNum)));
+		String cellValue = getCellValue(row.getCell(Integer.parseInt(titleNum)));
 		switch(columnTitle){
 		case "下单来源":// 下单来源 String sourceOfOrder
 			orderInfo.setSourceOfOrder(cellValue);
@@ -139,32 +96,15 @@ public class ReadCellUtil {
 		case "票价":// 票价=单价*张数 String priceAndNumber
 			orderInfo.setPriceAndNumber(cellValue);
 			break;
-		case "应收":// 应收 double shouldPayment
-			orderInfo.setShouldPayment(Double.parseDouble(cellValue));
-			break;
-		case "实收":// 实收=应收*折扣 double actualPayment
-			orderInfo.setActualPayment(Double.parseDouble(cellValue));
-			break;
+//		case "应收":// 应收 double shouldPayment
+//			orderInfo.setShouldPayment(Double.parseDouble(cellValue));
+//			break;
+//		case "实收":// 实收=应收*折扣 double actualPayment
+//			orderInfo.setActualPayment(Double.parseDouble(cellValue));
+//			break;
 		}
 	}
-	/**
-	 * 处理票价，返回 单价*张数 的List
-	 * 主要是为了处理形如"100*2 300*1"多种票价的情况
-	 * @param pricesCellValue
-	 * @return
-	 */
-	private static List<DetailedPriceInfo> getDetailedPriceList(String pricesCellValue){
-		List<DetailedPriceInfo> list = new ArrayList<DetailedPriceInfo>();
-		String[] pricesArray = pricesCellValue.split(" ");
-		for(int i=0;i<pricesArray.length;i++){
-			String[] detailedPriceArray = pricesArray[i].split("\\*");
-			DetailedPriceInfo dpi = new DetailedPriceInfo();
-			dpi.setPrice(Double.parseDouble(detailedPriceArray[0]));
-			dpi.setNum(Integer.parseInt(detailedPriceArray[1]));
-			list.add(dpi);
-		}
-		return list;
-	}
+	
 	/**
 	 * 当有多种票价组合在一个单元格时，此处做拆分行处理
 	 * 票价实际为两部分, 票价=单价*张数
@@ -179,15 +119,29 @@ public class ReadCellUtil {
 		String priceAndNumber = orderInfo.getPriceAndNumber();
 		//获取该条记录的票价单元格详细信息List,判断同一条数据存在多种票种的情况
 		//当该条记录有多种票时返回详细票价信息list
-		List<DetailedPriceInfo> pricesList = getDetailedPriceList(priceAndNumber);
+		List<DetailedPriceInfo> pricesList = getDetailedPriceList(priceAndNumber, " ", "\\*");
 		
 		//如果存在多条记录,即复制其余属性,修改单价/张数属性
 		for(int i=0;i<pricesList.size();i++){
 			OrderInfo OrderInfoSameLine = (OrderInfo) orderInfo.clone();
-			OrderInfoSameLine.setPriceOfTicket(pricesList.get(i).getPrice());
-			OrderInfoSameLine.setNumberOfTicket(pricesList.get(i).getNum());
+			double price = pricesList.get(i).getPrice();
+			int num = pricesList.get(i).getNum();
+			double shouldPayment = ArithUtil.mul(price, num);
+			//设置单价
+			OrderInfoSameLine.setPriceOfTicket(price);
+			//设置张数
+			OrderInfoSameLine.setNumberOfTicket(num);
+			//设置应收
+			OrderInfoSameLine.setShouldPayment(shouldPayment);
+			//根据判断是否有爱乐卡95折,设置实收
+			if(OrderInfoSameLine.getDiscountGrade() != null){
+				OrderInfoSameLine.setActualPayment(ArithUtil.mul(shouldPayment, 0.9));
+			}else{
+				OrderInfoSameLine.setActualPayment(shouldPayment);
+			}
 			list.add(OrderInfoSameLine);
 		}
 		return list;
 	}
+	
 }

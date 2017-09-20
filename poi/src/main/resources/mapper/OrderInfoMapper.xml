@@ -13,15 +13,15 @@
 	
 	<insert id="addOrderInfo" parameterType="OrderInfo">
 		INSERT INTO poi.order_info
-			(
+			(orderType,
 			sourceOfOrder,
-			orderid,
-			customorderid,
-			dateoforder,
-			dateofissuance,
-			statusoforder,
-			methodofpayment,
-			statusofpayment,
+			orderId,
+			customOrderId,
+			dateOfOrder,
+			dateOfIssuance,
+			statusOfOrder,
+			methodOfPayment,
+			statusOfPayment,
 			methodOfDistribution,
 			consignee,
 			phoneNumberOfConsignee,
@@ -37,9 +37,11 @@
 			priceOfTicket,
 			numberOfTicket,
 			shouldPayment,
-			actualPayment)
+			actualPayment,
+			ticketPurpose)
 		VALUES
-			(#{sourceOfOrder},
+			(#{orderType},
+			#{sourceOfOrder},
 			#{orderId},
 			#{customOrderId},
 			#{dateOfOrder},
@@ -62,7 +64,8 @@
 			#{priceOfTicket},
 			#{numberOfTicket},
 			#{shouldPayment},
-			#{actualPayment})
+			#{actualPayment},
+			#{ticketPurpose})
 	</insert>
 	
 	<delete id="clearOrderInfo">
