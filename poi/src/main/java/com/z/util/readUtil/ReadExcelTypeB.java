@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import com.z.core.dao.OrderInfoMapper;
 import com.z.core.entity.OrderInfo;
 import com.z.util.PropertyUtil;
 import com.z.util.readCellUtil.ReadExcelCellUtilForTypeB;
@@ -18,19 +20,28 @@ import com.z.util.readCellUtil.ReadExcelCellUtilForTypeB;
  *
  */
 public class ReadExcelTypeB extends BaseReadExcel{
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
 		insertData();
     }
 	/**
 	 * 插入数据
 	 * @throws IOException
 	 */
-	public static void insertData(){
+	public static void insertData() throws IOException{
 		String propName = "properties/columnOfTypeB.properties";
     	String fileName = "渠道订单-查询20170919 23%3A41.xls";
     	
     	List<OrderInfo> list = readSheet(propName, fileName);
     	System.out.println(list.size());
+    	
+    	SqlSession sqlSession = getSqlSession();
+    	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
+    	for(OrderInfo bean : list){
+//    		System.out.println(bean);
+    		mapper.addOrderInfo(bean);
+//    		System.out.println("success");
+    	}
+    	sqlSession.commit();
     	
 	}
 	

@@ -1,16 +1,12 @@
 package com.z.util.readUtil;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -25,12 +21,7 @@ import com.z.util.readCellUtil.ReadExcelCellUtilForTypeA;
  *
  */
 public class ReadExcelTypeA extends BaseReadExcel{
-	public static SqlSession getMapper() throws IOException{
-		InputStream inputStream = Resources.getResourceAsStream("mybatis/mybatis-config.xml");
-    	SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
-    	SqlSession sqlSession = factory.openSession();
-    	return sqlSession;
-	}
+	
 	public static void main(String[] args) throws IOException {
 		insertData();
 		countData();
@@ -46,7 +37,7 @@ public class ReadExcelTypeA extends BaseReadExcel{
     	List<OrderInfo> list = readSheet(propName, fileName);
     	System.out.println(list.size());
     	
-    	SqlSession sqlSession = getMapper();
+    	SqlSession sqlSession = getSqlSession();
     	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
     	for(OrderInfo bean : list){
 //    		System.out.println(bean);
@@ -61,7 +52,7 @@ public class ReadExcelTypeA extends BaseReadExcel{
 	 * @throws IOException
 	 */
 	public static void countData() throws IOException{
-		SqlSession sqlSession = getMapper();
+		SqlSession sqlSession = getSqlSession();
     	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
 		List<String> getNameOfCommodityList = mapper.getNameOfCommodityList();
     	Map<String, Integer> map = new HashMap<String, Integer>();

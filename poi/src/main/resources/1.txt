@@ -12,56 +12,36 @@ guitai2			柜台2
 guitai3			柜台3
 guitai4			柜台4
 
+mysqldump -u root -p poi > D:\poi.sql
+
 
 DROP TABLE IF EXISTS `order_info`;
+
 CREATE TABLE `order_info` (
-  `sourceoforder` varchar(100) NOT NULL,
-  `orderid` varchar(100) NOT NULL,
-  `customorderid` varchar(100) NOT NULL,
-  `dateoforder` datetime NOT NULL,
-  `dateofissuance` datetime DEFAULT NULL,
-  `statusoforder` int(11) NOT NULL,
-  `methodofpayment` varchar(100) DEFAULT NULL,
-  `statusofpayment` int(11) NOT NULL,
-  `methodOfDistribution` varchar(100) NOT NULL,
-  `consignee` varchar(100) DEFAULT NULL,
-  `phoneNumberOfConsignee` varchar(100) DEFAULT NULL,
-  `phoneNumberOfCustom` varchar(100) DEFAULT NULL,
-  `discountGrade` varchar(100) NOT NULL,
-  `perksOfMembershi` varchar(100) DEFAULT NULL,
-  `nameOfCommodity` varchar(100) NOT NULL,
-  `performanceId` varchar(100) NOT NULL,
-  `nameOfPerformance` varchar(100) NOT NULL,
-  `ieldOfPerformance` varchar(100) NOT NULL,
-  `dateOfPerformance` datetime NOT NULL,
-  `priceAndNumber` varchar(100) NOT NULL,
-  `priceOfTicket` double NOT NULL,
-  `numberOfTicket` int(11) NOT NULL,
-  `shouldPayment` double NOT NULL,
-  `actualPayment` double NOT NULL
+  `orderType` varchar(1) NOT NULL COMMENT '订单类型,A自主,B渠道,C主办方',
+  `sourceOfOrder` varchar(100) NOT NULL COMMENT '下单来源',
+  `orderid` varchar(100) NOT NULL COMMENT '内部订单号',
+  `customorderid` varchar(100) NOT NULL COMMENT '用户订单号',
+  `dateoforder` datetime NOT NULL COMMENT '下单日期',
+  `dateofissuance` datetime DEFAULT NULL COMMENT '发货日期,可为空',
+  `statusoforder` int(1) NOT NULL COMMENT '订单状态 0=交易关闭 1=已完成',
+  `methodofpayment` varchar(100) DEFAULT NULL COMMENT '支付方式,交易关闭时为空',
+  `statusofpayment` int(1) NOT NULL COMMENT '支付状态 0=未支付 1=已支付',
+  `methodOfDistribution` varchar(100) NOT NULL COMMENT '配送方式',
+  `consignee` varchar(100) DEFAULT NULL COMMENT '收货人,可为空',
+  `phoneNumberOfConsignee` varchar(100) DEFAULT NULL COMMENT '收货人手机号,可为空',
+  `phoneNumberOfCustom` varchar(100) DEFAULT NULL COMMENT '下单人手机号,可为空',
+  `discountGrade` varchar(100) NOT NULL COMMENT '下单会员等级折扣',
+  `perksOfMembershi` varchar(100) DEFAULT NULL COMMENT '订单会员权益,可为空',
+  `nameOfCommodity` varchar(100) NOT NULL COMMENT '商品名称',
+  `performanceId` varchar(100) NOT NULL COMMENT '场次Id',
+  `nameOfPerformance` varchar(100) NOT NULL COMMENT '场次名称',
+  `ieldOfPerformance` varchar(100) NOT NULL COMMENT '馆厅',
+  `dateOfPerformance` datetime NOT NULL COMMENT '演出日期',
+  `priceAndNumber` varchar(100) NOT NULL COMMENT '票价',
+  `priceOfTicket` double NOT NULL COMMENT '单价',
+  `numberOfTicket` int(11) NOT NULL COMMENT '张数',
+  `shouldPayment` double NOT NULL COMMENT '应收',
+  `actualPayment` double NOT NULL COMMENT '实收=应收*折扣',
+  `ticketPurpose` varchar(100) DEFAULT NULL COMMENT '出票用途,可以为空'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-ALTER TABLE POI.order_info ADD orderid varchar(100) NOT NULL COMMENT '内部订单号' ;
-ALTER TABLE POI.order_info ADD customorderid varchar(100) NOT NULL COMMENT '用户订单号' ;
-ALTER TABLE POI.order_info ADD dateoforder DATETIME NOT NULL COMMENT '下单日期' ;
-ALTER TABLE POI.order_info ADD dateofissuance DATETIME NULL COMMENT '发货日期,可为空' ;
-ALTER TABLE POI.order_info ADD statusoforder INT NOT NULL COMMENT '订单状态 0=交易关闭 1=已完成' ;
-ALTER TABLE POI.order_info ADD methodofpayment varchar(100) NOT NULL COMMENT '支付方式' ;
-ALTER TABLE POI.order_info ADD statusofpayment INT NOT NULL COMMENT '支付状态 0=未支付 1=已支付' ;
-ALTER TABLE POI.order_info ADD methodOfDistribution varchar(100) NOT NULL COMMENT '配送方式' ;
-ALTER TABLE POI.order_info ADD consignee varchar(100) NOT NULL COMMENT '收货人' ;
-ALTER TABLE POI.order_info ADD phoneNumberOfConsignee varchar(100) NOT NULL COMMENT '收货人手机号' ;
-ALTER TABLE POI.order_info ADD phoneNumberOfCustom varchar(100) NOT NULL COMMENT '下单人手机号' ;
-ALTER TABLE POI.order_info ADD discountGrade varchar(100) NOT NULL COMMENT '下单会员等级折扣' ;
-ALTER TABLE POI.order_info ADD perksOfMembershi varchar(100) NULL COMMENT '订单会员权益' ;
-ALTER TABLE POI.order_info ADD nameOfCommodity varchar(100) NOT NULL COMMENT '商品名称' ;
-ALTER TABLE POI.order_info ADD performanceId varchar(100) NOT NULL COMMENT '场次Id' ;
-ALTER TABLE POI.order_info ADD nameOfPerformance varchar(100) NOT NULL COMMENT '场次名称' ;
-ALTER TABLE POI.order_info ADD ieldOfPerformance varchar(100) NOT NULL COMMENT '馆厅' ;
-ALTER TABLE POI.order_info ADD dateOfPerformance DATETIME NOT NULL COMMENT '演出日期' ;
-ALTER TABLE POI.order_info ADD priceAndNumber varchar(100) NOT NULL COMMENT '票价' ;
-ALTER TABLE POI.order_info ADD priceOfTicket DOUBLE NOT NULL COMMENT '单价' ;
-ALTER TABLE POI.order_info ADD numberOfTicket INT NOT NULL COMMENT '张数' ;
-ALTER TABLE POI.order_info ADD shouldPayment DOUBLE NOT NULL COMMENT '应收' ;
-ALTER TABLE POI.order_info ADD actualPayment DOUBLE NOT NULL COMMENT '实收=应收*折扣' ;

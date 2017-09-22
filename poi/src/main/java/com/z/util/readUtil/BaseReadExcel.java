@@ -4,6 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
@@ -13,6 +17,28 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 
 public class BaseReadExcel {
+	
+	/**
+	 * 获取SqlSession
+	 * @return
+	 * @throws IOException
+	 */
+	public static SqlSession getSqlSession() throws IOException{
+		InputStream inputStream = Resources.getResourceAsStream("mybatis/mybatis-config.xml");
+    	SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
+    	SqlSession sqlSession = factory.openSession();
+    	return sqlSession;
+	}
+	
+	/**
+	 * 获取数据工作簿
+	 * @param fileName
+	 * @param sheetIndex
+	 * @return
+	 * @throws IOException
+	 * @throws EncryptedDocumentException
+	 * @throws InvalidFormatException
+	 */
 	protected static Sheet getSheet(String fileName, int sheetIndex) throws IOException, 
 											 EncryptedDocumentException, InvalidFormatException{
 		//读取文件流

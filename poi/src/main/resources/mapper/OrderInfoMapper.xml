@@ -8,7 +8,7 @@
 	<select id="getNumberOfTicketsSold" resultType="int">
 		select sum(numberOfTicket) from poi.order_info
 		where nameOfCommodity = #{nameOfCommodity}
-		and statusoforder = 1;
+		and statusOfOrder = 1;
 	</select>
 	
 	<insert id="addOrderInfo" parameterType="OrderInfo">
