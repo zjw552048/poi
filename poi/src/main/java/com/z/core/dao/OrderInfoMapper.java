@@ -28,4 +28,9 @@ public interface OrderInfoMapper {
 	 * 根据演出名获取已售张数
 	 */
 	int getNumberOfTicketsSold(String nameOfCommodity);
+	
+	/**
+	 * 根据演出吗获取实收额
+	 */
+	double getTotalActualPayment(String nameOfCommodity);
 }

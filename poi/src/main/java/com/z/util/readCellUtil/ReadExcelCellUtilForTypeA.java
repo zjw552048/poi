@@ -133,12 +133,14 @@ public class ReadExcelCellUtilForTypeA extends BaseReadCellUtil{
 			//设置应收
 			OrderInfoSameLine.setShouldPayment(shouldPayment);
 			//根据判断是否有爱乐卡95折,设置实收
-			if(OrderInfoSameLine.getDiscountGrade() != null){
+			String discountGrade = OrderInfoSameLine.getPerksOfMembershi();
+			if(discountGrade == null || "".equals(discountGrade)){
+				OrderInfoSameLine.setDiscount(1);
+				OrderInfoSameLine.setActualPayment(shouldPayment);
+			}else{
 				double discount = 0.95;
 				OrderInfoSameLine.setDiscount(discount);
 				OrderInfoSameLine.setActualPayment(ArithUtil.mul(shouldPayment, discount));
-			}else{
-				OrderInfoSameLine.setActualPayment(shouldPayment);
 			}
 			list.add(OrderInfoSameLine);
 		}

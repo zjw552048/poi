@@ -11,6 +11,12 @@
 		and statusOfOrder = 1;
 	</select>
 	
+	<select id="getTotalActualPayment" resultType="double">
+		select sum(actualPayment) from poi.order_info
+		where nameOfCommodity = #{nameOfCommodity}
+		and statusOfOrder = 1;
+	</select>
+	
 	<insert id="addOrderInfo" parameterType="OrderInfo">
 		INSERT INTO poi.order_info
 			(orderType,

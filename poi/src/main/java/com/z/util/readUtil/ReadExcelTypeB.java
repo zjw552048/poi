@@ -29,7 +29,7 @@ public class ReadExcelTypeB extends BaseReadExcel{
 	 */
 	public static void insertData() throws IOException{
 		String propName = "properties/columnOfTypeB.properties";
-    	String fileName = "渠道订单-查询20170919 23%3A41.xls";
+    	String fileName = "20170926/渠道订单-查询20170925 23%3A03.xls";
     	
     	List<OrderInfo> list = readSheet(propName, fileName);
     	System.out.println(list.size());
@@ -58,6 +58,7 @@ public class ReadExcelTypeB extends BaseReadExcel{
 			String[] columnTitleArray = getSheetColumnTitleArray(sheet);
 			//获取配置文件允许的标题map
 			Map<String, String> columnTitleMap = PropertyUtil.getPropMap(propName);
+			System.out.println(columnTitleMap);
 			//获取最后一行
 			int lastRow = sheet.getLastRowNum();
 			//跳过标题,从第二行开始读取数据

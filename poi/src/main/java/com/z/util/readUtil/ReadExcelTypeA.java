@@ -23,8 +23,8 @@ import com.z.util.readCellUtil.ReadExcelCellUtilForTypeA;
 public class ReadExcelTypeA extends BaseReadExcel{
 	
 	public static void main(String[] args) throws IOException {
-//		insertData();
-		countData();
+		insertData();
+//		countData();
     }
 	/**
 	 * 插入数据
@@ -32,7 +32,7 @@ public class ReadExcelTypeA extends BaseReadExcel{
 	 */
 	public static void insertData() throws IOException{
 		String propName = "properties/columnOfTypeA.properties";
-    	String fileName = "订单查询20170919 22%3A52.xls";
+    	String fileName = "20170926/订单查询20170925 23%3A03.xls";
     	
     	List<OrderInfo> list = readSheet(propName, fileName);
     	System.out.println(list.size());
@@ -63,6 +63,17 @@ public class ReadExcelTypeA extends BaseReadExcel{
     	System.out.println(map);
 	}
 	
+	public static void countTotalActualPayment() throws IOException{
+		SqlSession sqlSession = getSqlSession();
+    	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
+		List<String> getNameOfCommodityList = mapper.getNameOfCommodityList();
+    	Map<String, Double> map = new HashMap<String, Double>();
+    	for(String nameOfCommodity : getNameOfCommodityList){
+    		double num = mapper.getTotalActualPayment(nameOfCommodity);
+    		map.put(nameOfCommodity, num);
+    	}
+    	System.out.println(map);
+	}
 	/**
 	 * 读取工作簿内容
 	 * @param propName
