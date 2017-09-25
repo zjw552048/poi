@@ -75,7 +75,6 @@ public class ReadExcelCellUtilForTypeA extends BaseReadCellUtil{
 			orderInfo.setDiscountGrade(cellValue);
 			break;
 		case "订单会员权益":// 订单会员权益 String perksOfMembershi
-			//比较特殊,可能为空
 			orderInfo.setPerksOfMembershi(cellValue);
 			break;
 		case "商品名称":// 商品名称 String nameOfCommodity
@@ -87,8 +86,8 @@ public class ReadExcelCellUtilForTypeA extends BaseReadCellUtil{
 		case "场次名称":// 场次名称 String nameOfPerformance
 			orderInfo.setNameOfPerformance(cellValue);
 			break;
-		case "馆厅":// 馆厅 String ieldOfPerformance
-			orderInfo.setIeldOfPerformance(cellValue);
+		case "馆厅":// 馆厅 String fieldOfPerformance
+			orderInfo.setFieldOfPerformance(cellValue);
 			break;
 		case "演出日期":// 演出日期 Date dateOfPerformance
 			orderInfo.setDateOfPerformance(DateFormatUtil.parseToDate(cellValue));
@@ -135,7 +134,9 @@ public class ReadExcelCellUtilForTypeA extends BaseReadCellUtil{
 			OrderInfoSameLine.setShouldPayment(shouldPayment);
 			//根据判断是否有爱乐卡95折,设置实收
 			if(OrderInfoSameLine.getDiscountGrade() != null){
-				OrderInfoSameLine.setActualPayment(ArithUtil.mul(shouldPayment, 0.9));
+				double discount = 0.95;
+				OrderInfoSameLine.setDiscount(discount);
+				OrderInfoSameLine.setActualPayment(ArithUtil.mul(shouldPayment, discount));
 			}else{
 				OrderInfoSameLine.setActualPayment(shouldPayment);
 			}

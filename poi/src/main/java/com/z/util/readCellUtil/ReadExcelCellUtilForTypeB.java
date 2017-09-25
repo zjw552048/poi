@@ -32,14 +32,13 @@ public class ReadExcelCellUtilForTypeB extends BaseReadCellUtil{
 		}
 		String cellValue = getCellValue(row.getCell(Integer.parseInt(titleNum)));
 		switch(columnTitle){
-		case "渠道账号":// 即下单来源 String sourceOfOrder
+		case "渠道账号":// 渠道账号,即下单来源 String sourceOfOrder
 			orderInfo.setSourceOfOrder(cellValue);
 			break;
 		case "内部订单号":// 内部订单号 String orderId
 			orderInfo.setOrderId(cellValue);
 			break;
 		case "下单日期":// 下单日期 Date dateOfOrder
-			//比较特殊,下单日期可能为空
 			orderInfo.setDateOfOrder(DateFormatUtil.parseToDate(cellValue));
 			break;
 		case "订单状态":// 订单状态 0=交易关闭 1=已完成 int statusOfOrder
@@ -48,7 +47,7 @@ public class ReadExcelCellUtilForTypeB extends BaseReadCellUtil{
 		case "商品名称":// 商品名称 String nameOfCommodity
 			orderInfo.setNameOfCommodity(cellValue);
 			break;
-		case "场次Id":// 场次Id String performanceId
+		case "场次ID":// 场次Id String performanceId
 			orderInfo.setPerformanceId(cellValue);
 			break;
 		case "场次名称":// 场次名称 String nameOfPerformance
@@ -57,11 +56,6 @@ public class ReadExcelCellUtilForTypeB extends BaseReadCellUtil{
 		case "演出日期":// 演出日期 Date dateOfPerformance
 			orderInfo.setDateOfPerformance(DateFormatUtil.parseToDate(cellValue));
 			break;
-//		case "总价":// 总价,即应收 double shouldPayment,应收=此栏*0.9
-//			double doubleValue = Double.parseDouble(cellValue);
-//			orderInfo.setShouldPayment(doubleValue);
-//			orderInfo.setActualPayment(ArithUtil.mul(doubleValue, 0.9));
-//			break;
 		case "明细":// 明细,即票价=单价*张数 String priceAndNumber
 			orderInfo.setPriceAndNumber(cellValue);
 			break;
@@ -96,8 +90,11 @@ public class ReadExcelCellUtilForTypeB extends BaseReadCellUtil{
 			OrderInfoSameLine.setNumberOfTicket(num);
 			//设置应收
 			OrderInfoSameLine.setShouldPayment(shouldPayment);
-			//设置实收,渠道订单折扣固定
-			OrderInfoSameLine.setActualPayment(ArithUtil.mul(shouldPayment, 0.9));
+			//设置折扣,渠道订单折扣固定0.9
+			double discount = 0.9;
+			OrderInfoSameLine.setDiscount(discount);
+			//设置实收
+			OrderInfoSameLine.setActualPayment(ArithUtil.mul(shouldPayment, discount));
 			System.out.println(OrderInfoSameLine);
 			list.add(OrderInfoSameLine);
 		}

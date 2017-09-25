@@ -41,6 +41,8 @@ public class OrderInfo implements Serializable, Cloneable {
 	private String phoneNumberOfConsignee;
 	// 下单人手机号
 	private String phoneNumberOfCustom;
+	// 订单折扣
+	private double discount;
 	// 下单会员等级折扣
 	private String discountGrade;
 	// 订单会员权益
@@ -52,7 +54,7 @@ public class OrderInfo implements Serializable, Cloneable {
 	// 场次名称
 	private String nameOfPerformance;
 	// 馆厅
-	private String ieldOfPerformance;
+	private String fieldOfPerformance;
 	// 演出日期
 	private Date dateOfPerformance;
 	// 票价
@@ -71,6 +73,14 @@ public class OrderInfo implements Serializable, Cloneable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 
 	public String getPriceAndNumber() {
@@ -217,12 +227,12 @@ public class OrderInfo implements Serializable, Cloneable {
 		this.nameOfPerformance = nameOfPerformance;
 	}
 
-	public String getIeldOfPerformance() {
-		return ieldOfPerformance;
+	public String getFieldOfPerformance() {
+		return fieldOfPerformance;
 	}
 
-	public void setIeldOfPerformance(String ieldOfPerformance) {
-		this.ieldOfPerformance = ieldOfPerformance;
+	public void setFieldOfPerformance(String fieldOfPerformance) {
+		this.fieldOfPerformance = fieldOfPerformance;
 	}
 
 	public Date getDateOfPerformance() {
@@ -288,12 +298,13 @@ public class OrderInfo implements Serializable, Cloneable {
 				+ dateOfIssuance + ", statusOfOrder=" + statusOfOrder + ", methodOfPayment=" + methodOfPayment
 				+ ", statusOfPayment=" + statusOfPayment + ", methodOfDistribution=" + methodOfDistribution
 				+ ", consignee=" + consignee + ", phoneNumberOfConsignee=" + phoneNumberOfConsignee
-				+ ", phoneNumberOfCustom=" + phoneNumberOfCustom + ", discountGrade=" + discountGrade
-				+ ", perksOfMembershi=" + perksOfMembershi + ", nameOfCommodity=" + nameOfCommodity + ", performanceId="
-				+ performanceId + ", nameOfPerformance=" + nameOfPerformance + ", ieldOfPerformance="
-				+ ieldOfPerformance + ", dateOfPerformance=" + dateOfPerformance + ", priceAndNumber=" + priceAndNumber
-				+ ", priceOfTicket=" + priceOfTicket + ", numberOfTicket=" + numberOfTicket + ", shouldPayment="
-				+ shouldPayment + ", actualPayment=" + actualPayment + ", ticketPurpose=" + ticketPurpose + "]";
+				+ ", phoneNumberOfCustom=" + phoneNumberOfCustom + ", discount=" + discount + ", discountGrade="
+				+ discountGrade + ", perksOfMembershi=" + perksOfMembershi + ", nameOfCommodity=" + nameOfCommodity
+				+ ", performanceId=" + performanceId + ", nameOfPerformance=" + nameOfPerformance
+				+ ", fieldOfPerformance=" + fieldOfPerformance + ", dateOfPerformance=" + dateOfPerformance
+				+ ", priceAndNumber=" + priceAndNumber + ", priceOfTicket=" + priceOfTicket + ", numberOfTicket="
+				+ numberOfTicket + ", shouldPayment=" + shouldPayment + ", actualPayment=" + actualPayment
+				+ ", ticketPurpose=" + ticketPurpose + "]";
 	}
 
 }

@@ -23,7 +23,7 @@ import com.z.util.readCellUtil.ReadExcelCellUtilForTypeA;
 public class ReadExcelTypeA extends BaseReadExcel{
 	
 	public static void main(String[] args) throws IOException {
-		insertData();
+//		insertData();
 		countData();
     }
 	/**

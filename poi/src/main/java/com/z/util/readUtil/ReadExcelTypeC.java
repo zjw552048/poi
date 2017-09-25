@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import com.z.core.dao.OrderInfoMapper;
 import com.z.core.entity.OrderInfo;
 import com.z.util.PropertyUtil;
 import com.z.util.readCellUtil.ReadExcelCellUtilForTypeC;
@@ -32,6 +34,14 @@ public class ReadExcelTypeC extends BaseReadExcel{
     	List<OrderInfo> list = readSheet(propName, fileName);
     	System.out.println(list.size());
     	
+    	SqlSession sqlSession = getSqlSession();
+    	OrderInfoMapper mapper = sqlSession.getMapper(OrderInfoMapper.class);
+    	for(OrderInfo bean : list){
+//    		System.out.println(bean);
+    		mapper.addOrderInfo(bean);
+//    		System.out.println("success");
+    	}
+    	sqlSession.commit();
 	}
 	
 	/**
