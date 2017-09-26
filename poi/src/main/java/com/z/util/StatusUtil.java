@@ -11,6 +11,9 @@ public class StatusUtil {
 	public static int getStatusOfOrder(String statusOfOrderString){
 		int statusOfOrder = -999;
 		switch (statusOfOrderString) {
+		case "未完成":
+			statusOfOrder = -2;
+			break;
 		case "系统关闭":
 			statusOfOrder = -1;
 			break;

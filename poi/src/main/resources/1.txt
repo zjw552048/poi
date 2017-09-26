@@ -31,7 +31,7 @@ CREATE TABLE `order_info` (
   `consignee` varchar(100) DEFAULT NULL COMMENT '收货人,可为空',
   `phoneNumberOfConsignee` varchar(100) DEFAULT NULL COMMENT '收货人手机号,可为空',
   `phoneNumberOfCustom` varchar(100) DEFAULT NULL COMMENT '下单人手机号,可为空',
-  `discount` double NOT NULL COMMENT '折扣',
+  `discount` decimal(20,10) NOT NULL COMMENT '折扣',
   `discountGrade` varchar(100) DEFAULT NULL COMMENT '下单会员等级折扣',
   `perksOfMembershi` varchar(100) DEFAULT NULL COMMENT '订单会员权益,可为空',
   `nameOfCommodity` varchar(100) NOT NULL COMMENT '商品名称',
@@ -40,10 +40,11 @@ CREATE TABLE `order_info` (
   `fieldOfPerformance` varchar(100) DEFAULT NULL COMMENT '馆厅',
   `dateOfPerformance` datetime NOT NULL COMMENT '演出日期',
   `priceAndNumber` varchar(100) NOT NULL COMMENT '票价',
-  `priceOfTicket` double NOT NULL COMMENT '单价',
+  `priceOfTicket` decimal(20,10) NOT NULL COMMENT '单价',
   `numberOfTicket` int(11) NOT NULL COMMENT '张数',
-  `shouldPayment` double DEFAULT NULL COMMENT '应收',
-  `actualPayment` double NOT NULL COMMENT '实收=应收*折扣',
+  `shouldPayment` decimal(20,10) DEFAULT NULL COMMENT '应收',
+  `actualPayment` decimal(20,10) NOT NULL COMMENT '实收=应收*折扣',
   `ticketPurpose` varchar(100) DEFAULT NULL COMMENT '出票用途,可以为空'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
