@@ -1,0 +1,21 @@
+wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocksR.sh
+
+chmod +x shadowsocksR.sh
+
+./shadowsocksR.sh 2>&1 | tee shadowsockssR.log
+
+zxcvb505113236
+
+
+Server ip1 Tokyo:108.61.181.186
+Server ip2 France:45.32.144.7
+Server port:8989
+Password:zxcvb505113236
+Local IP:127.0.0.1
+Local Port:1080
+Protocol:origin
+obfs:plain
+Encryption Method:aes-256-cfb
+
+
+28	29	accessAction	权限列表	admin	2016-08-22 19:13:57	36	系统设置	true	false	/view/UserManagement/Action/action.jsp

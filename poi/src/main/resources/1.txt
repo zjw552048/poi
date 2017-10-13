@@ -48,3 +48,15 @@ CREATE TABLE `order_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+http://blog.csdn.net/sealyao/article/details/5761747 | 公钥、私钥、证书的基本概念和使用 - CSDN博客
+http://blog.csdn.net/allwtg/article/details/4969543 | 公钥，私钥，证书 - CSDN博客
+http://blog.csdn.net/chroming/article/details/50995384 | HTTPS中的对称密钥加密，公开密钥加密，数字证书 - 司开星的专栏 - CSDN博客
+http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html | SSL/TLS协议运行机制的概述 - 阮一峰的网络日志
+http://blog.csdn.net/u013401853/article/details/52781072 | 私钥、公钥、数字签名、数字证书、HTTPS - u013401853的专栏 - CSDN博客
+http://www.cnblogs.com/xuaidongstdudyrecording/p/6296262.html | 公钥与私钥对HTTPS的理解(数字证书的需要) - FeckCode - 博客园
+https://www.zhihu.com/question/29620953 | SSL中，公钥、私钥、证书的后缀名都是些啥？ - 知乎
+http://blog.csdn.net/chroming/article/details/50995384 | HTTPS中的对称密钥加密，公开密钥加密，数字证书 - 司开星的专栏 - CSDN博客
+http://blog.csdn.net/chroming/article/details/50995384#comments | HTTPS中的对称密钥加密，公开密钥加密，数字证书 - 司开星的专栏 - CSDN博客
+http://blog.csdn.net/tenfyguo/article/details/40922813 | 【上】安全HTTPS-全面详解对称加密，非对称加密，数字签名，数字证书和HTTPS - CSDN博客
+http://blog.csdn.net/tenfyguo/article/details/40958727 | 【下】安全HTTPS-全面详解对称加密，非对称加密，数字签名，数字证书和HTTPS - CSDN博客
+https://app.yinxiang.com/Home.action#n=20eddaf0-ab70-4e0e-9cdb-74cb10445f98&s=s39&ses=4&sh=1&sds=5& | keytool 用法总结 - 水木年华..的博客 - CSDN博客 | 印象笔记网页版
